@@ -16,6 +16,12 @@ const redisClient = redis.createClient({
   password: process.env.REDIS_PASSWORD,
 });
 
+// 라우터 선언
+const indexRouter = require("./routers/index.js");
+const usersRouter = require("./routers/users.js");
+const signinRouter = require("./routers/signin.js");
+const signupRouter = require("./routers/signup.js");
+
 const app = express();
 
 // DB와 연결
@@ -52,6 +58,12 @@ app.use(
     store: new RedisStore({ client: redisClient }),
   })
 );
+
+// URL과 라우터 매칭
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/signin", signinRouter);
+app.use("/signup", signupRouter);
 
 // ERROR 메세지 창
 app.use((err, req, res, next) => {
